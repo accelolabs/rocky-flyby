@@ -8,11 +8,11 @@ using namespace ROCKY_NAMESPACE;
 #undef EPSILON
 #define EPSILON 1e-6
 
-GeoCircle GeoCircle::INVALID = GeoCircle();
+GeoCircle GeoCircle::INVALID;
 
 
 GeoCircle::GeoCircle() :
-    _center(GeoPoint::INVALID),
+    _center(),
     _radius(-1.0)
 {
     //nop

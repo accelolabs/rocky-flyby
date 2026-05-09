@@ -45,8 +45,8 @@ namespace
         VkFormat imageFormat,
         VkFormat depthFormat)
     {
-        auto colorAttachment = vsg::defaultColorAttachment(imageFormat);
-		colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR; // VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
+		auto colorAttachment = vsg::defaultColorAttachment(imageFormat);
+		colorAttachment.finalLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
 
         auto depthAttachment = vsg::defaultDepthAttachment(depthFormat);
 		depthAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
@@ -156,7 +156,7 @@ static void screenshot(rocky::VSGContext ctx, vsg::ref_ptr<vsg::Image> sourceIma
 	auto transitionSourceImageToTransferSourceLayoutBarrier = vsg::ImageMemoryBarrier::create(
 		VK_ACCESS_MEMORY_READ_BIT,                                     // srcAccessMask
 		VK_ACCESS_TRANSFER_READ_BIT,                                   // dstAccessMask
-		VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,                               // oldLayout
+		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,                          // oldLayout
 		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,                          // newLayout
 		VK_QUEUE_FAMILY_IGNORED,                                       // srcQueueFamilyIndex
 		VK_QUEUE_FAMILY_IGNORED,                                       // dstQueueFamilyIndex
@@ -209,7 +209,7 @@ static void screenshot(rocky::VSGContext ctx, vsg::ref_ptr<vsg::Image> sourceIma
 		VK_ACCESS_TRANSFER_READ_BIT,                                   // srcAccessMask
 		VK_ACCESS_MEMORY_READ_BIT,                                     // dstAccessMask
 		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,                          // oldLayout
-		VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,                               // newLayout
+		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,                          // newLayout
 		VK_QUEUE_FAMILY_IGNORED,                                       // srcQueueFamilyIndex
 		VK_QUEUE_FAMILY_IGNORED,                                       // dstQueueFamilyIndex
 		sourceImage,                                                   // image
@@ -282,7 +282,7 @@ auto Demo_Screenshot = [](Application& app)
         offscreenRenderGraph->renderArea.extent = offscreenRenderGraph->framebuffer->extent2D();
 		offscreenRenderGraph->setClearValues(
 			VkClearColorValue{ {0.0f, 0.0f, 0.0f, 1.0f} },
-			VkClearDepthStencilValue{ 0.0f, 0 });
+			VkClearDepthStencilValue{ 1.0f, 0 });
 
 		auto viewRG = view.renderGraph;
 		offscreenRenderGraph->children = viewRG->children;
